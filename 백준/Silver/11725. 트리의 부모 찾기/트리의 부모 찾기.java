@@ -1,4 +1,5 @@
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +15,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
 
 		int N = Integer.parseInt(st.nextToken());
 
@@ -40,8 +42,9 @@ public class Main {
 		}
 
 		for (int i = 2; i < N + 1; i++) {
-			System.out.println(rootNode[i]);
+			sb.append(rootNode[i]).append("\n");
 		}
+		System.out.println(sb);
 	}
 
 	private static void DFS(int node) {
