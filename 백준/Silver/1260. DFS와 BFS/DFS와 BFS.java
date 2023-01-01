@@ -1,84 +1,77 @@
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
 	static boolean[] visited;
-	static List<Integer>[] A;
+	static ArrayList<Integer>[] node;
+	static StringBuilder sb;
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		// 정점의 개수
-		int N = sc.nextInt();
-		// 간선의 개수
-		int M = sc.nextInt();
-		// 탐색을 시작할 정점의 번호
-		int V = sc.nextInt();
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		sb = new StringBuilder();
 
-		A = new ArrayList[N + 1];
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		int V = Integer.parseInt(st.nextToken());
 
-		for (int i = 0; i <= N; i++) {
-			A[i] = new ArrayList<Integer>();
+		node = new ArrayList[N + 1];
+		visited = new boolean[N + 1];
+
+		for (int i = 1; i < N + 1; i++) {
+			node[i] = new ArrayList<>();
 		}
-		// 입력 받기
+
 		for (int i = 0; i < M; i++) {
-			int s = sc.nextInt();
-			int e = sc.nextInt();
-			A[s].add(e);
-			A[e].add(s);
+			st = new StringTokenizer(br.readLine());
+			int s = Integer.parseInt(st.nextToken());
+			int e = Integer.parseInt(st.nextToken());
+			node[s].add(e);
+			node[e].add(s);
 		}
-
-		// 번호가 작은 것을 먼저 방문하기 위해 정렬하기
-		for (int i = 1; i <= N; i++) {
-			Collections.sort(A[i]);
+		for(int i=1;i<=N;i++) {
+			Collections.sort(node[i]);
 		}
-		// 방문 배열 초기화하기
-		visited = new boolean[N + 1];
 		DFS(V);
-		System.out.println();
-		// 방문 배열 초기화하기
 		visited = new boolean[N + 1];
+		sb.append("\n");
 		BFS(V);
-		System.out.println();
-	}// main
+		System.out.println(sb);
+	}
 
-	public static void DFS(int node) {
-		if(visited[node])
+	private static void DFS(int v) {
+		if (visited[v])
 			return;
-		System.out.print(node + " ");
-		visited[node] = true;
-		// v의 인접한 노드들 방문 검사
-		for (int x : A[node]) {
-			if (!visited[x])
+		visited[v] = true;
+		sb.append(v).append(" ");
+		for (int x : node[v]) {
+			if (!visited[x]) {
 				DFS(x);
+			}
 		}
 	}
 
-	public static void BFS(int node) {
-		Queue<Integer> queue = new LinkedList<Integer>();
-		// 제일 먼저 넘어온 node가 들어가고
-		queue.add(node);
-		visited[node] = true;
-
-		// 큐에 남는게 없을 떄 까지
-		while (!queue.isEmpty()) {
-			// 방금 나간 node를 저장해서
-			int now_Node = queue.poll();
-			System.out.print(now_Node + " ");
-			// 방금 나간 node랑 연결된 요소들의 방문여부를 확인하고
-			for (int x : A[now_Node]) {
-				// 만약 방문이 false 라면
+	private static void BFS(int v) {
+		Queue<Integer> que = new LinkedList<>();
+		que.add(v);
+		visited[v] = true;
+		while (!que.isEmpty()) {
+			int curr = que.poll();
+			sb.append(curr).append(" ");
+			for (int x : node[curr]) {
 				if (!visited[x]) {
-					// true로 바꾸고
 					visited[x] = true;
-					// 연결된 요소가 큐에 들어간다
-					queue.add(x);
+					que.add(x);
 				}
 			}
-
 		}
 	}
 }
