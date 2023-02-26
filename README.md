@@ -1,2 +1,2 @@
-# Beakjoon_Java
-Beakjoon_Java
+# Algorithm solving
+Java, Python, Javascript
