@@ -1,4 +1,3 @@
-
 N, K = map(int, input().split())
 S = list(map(int,input().split()))
 D = list(map(int,input().split()))
