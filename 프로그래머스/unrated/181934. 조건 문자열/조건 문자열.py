@@ -1,15 +1,11 @@
 def solution(ineq, eq, n, m):
     answer = 0
     if ineq == "<" and eq == "=":
-        if n<=m: answer = 1 
-        else: answer = 0
+        answer = int(n<=m)
     elif ineq == "<" and eq =="!":
-        if n<m: answer = 1 
-        else: answer = 0
+        answer = int(n<m)
     elif ineq ==">" and eq == "=":
-        if n>=m : answer = 1 
-        else: answer = 0
+        answer = int(n>=m)
     else: 
-        if n>m : answer = 1 
-        else : answer = 0
+        answer = int(n>m)
     return answer
