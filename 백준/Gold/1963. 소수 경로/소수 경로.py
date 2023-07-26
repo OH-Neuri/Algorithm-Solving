@@ -1,44 +1,34 @@
 from collections import deque
-input = __import__('sys').stdin.readline
+import sys
+input = sys.stdin.readline
 
-#소수판별함수
-def isPrime(number):
-    if number == 1:
-        return False
-    for i in range(2, int(number**1/2)+1):
-        if number % i == 0:
-            return False
-    return True
+tc = int(input())
+for _ in range(tc):
+    A, B = map(str,input().split(" "))
+    prime_number = [0 for _ in range(10000)]
 
-#BFS
-def bfs(A, B):
-    q = deque()
-    q.append((A,0))
-    while q:
-        password, count = q.popleft()
-        if password == B:
-            print(count)
-            return
-        for i in range(4):
-            for j in range(10):
-                new_pass = list(str(password))
-                new_pass[i] = str(j)
-                new_pass = int(''.join(new_pass))
-                if 1000<=new_pass and not visited[new_pass] and prime[new_pass]:
-                    visited[new_pass] = 1
-                    q.append((new_pass, count+1))
-                
+    # 소수 배열
+    for i in range(2, 100):
+        for j in range(2*i,10000,i):
+            prime_number[j]=1
 
+    # 소수 확인 함수
+    def isPrime(i):
+        return prime_number[i]==0
 
-#소수판별테이블
-prime = [False]
-for i in range(1,10000):
-    prime.append(isPrime(i))
-
-#테스트케이스
-T = int(input())
-for _ in range(T):
-    A, B = map(int, input().split())
-    visited = [0]*10000
-    visited[A] = 1
-    bfs(A,B)
+    def BFS():
+        q = deque([int(A)])
+        prime_number[int(A)] = 1
+        while q:
+            curr = q.popleft()
+            strNow = str(curr)
+            if curr==int(B):
+                print(prime_number[int(curr)]-1)
+                return
+            for i in range(4):
+                for j in range(10):
+                    temp = int(strNow[:i] + str(j) + strNow[i+1:])
+                    if isPrime(temp) and prime_number[temp]==0 and temp>=1000:
+                        prime_number[temp] += prime_number[curr]+1
+                        q.append(temp)
+    BFS()
