@@ -1,2 +1,2 @@
 # Algorithm solving
-Java, Python, Javascript
+Java, Python, Javascript 🔥
