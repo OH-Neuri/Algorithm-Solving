@@ -1,14 +1,16 @@
 def solution(numbers, target):
-    n = len(numbers)
     answer = 0
-    def dfs(idx,ans):
+    
+    def DFS(dept, val):
         nonlocal answer
-        if idx == n:
-            if ans == target:
-                answer += 1 
+        
+        if dept == len(numbers):
+            if val == target:
+                answer +=1
             return
-        dfs(idx+1,ans+numbers[idx])
-        dfs(idx+1,ans-numbers[idx])
-
-    dfs(0,0)
+        
+        DFS(dept+1, val+numbers[dept])
+        DFS(dept+1, val-numbers[dept])
+        
+    DFS(0,0)
     return answer
