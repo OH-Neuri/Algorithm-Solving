@@ -1,4 +1,6 @@
-출처: https://github.com/tony9402/baekjoon/blob/f805be86fb093d14931d7a66c7bda6e1d2d38b4d/CodingTest.md
+[메인으로 돌아가기](https://github.com/tony9402/baekjoon)
+
+### 최근 코딩테스트 정리
 
 |회사|알고리즘|
 |:--:|:--:|
@@ -27,3 +29,25 @@
 |현대 오토에버|문자열, DP, 순열조합|
 |SK C&C|Heap, 구현, 순열, BFS|
 |파수|트리, 조합, 파싱, 구현|
+
+#### 코딩테스트 Algorithm 분류
+ - 구현
+ - DFS
+ - BFS
+ - Two pointer
+ - Brute Force
+ - DP
+ - Tree DP
+ - 시뮬레이션
+ - Union Find
+ - String
+ - 자료구조 -> 우선순위 큐, 스택, 트리
+ - 순열조합
+ - Trie
+ - Flood fill
+ - Bit masking
+ - 위상정렬
+ - 이분탐색
+ - 최단거리
+ - 파싱
+ - Segment Tree
