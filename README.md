@@ -48,6 +48,5 @@
  - Bit masking
  - 위상정렬
  - 이분탐색
- - 최단거리
  - 파싱
  - Segment Tree
