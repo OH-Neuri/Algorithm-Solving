@@ -39,7 +39,6 @@
  - DP
  - Tree DP
  - 시뮬레이션
- - Union Find
  - String
  - 자료구조 -> 우선순위 큐, 스택, 트리
  - 순열조합
