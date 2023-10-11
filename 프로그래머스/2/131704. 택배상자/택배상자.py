@@ -11,6 +11,4 @@ def solution(order):
                 stack.pop()
             else:
                 break
-
     return len(answer)
-print(solution([1,2,3,4,5]))
