@@ -11,11 +11,9 @@ def solution(cards):
             visited[check] = i+1
             check = cards[check]-1
             
-        
     for i in range(l):
         if visited[i] == 0:
             Box(i)
     
     counter = sorted(Counter(visited).items(), key=lambda x:x[1], reverse=True)
-    
     return (counter[0][1] * counter[1][1]) if len(counter)>1 else 0
