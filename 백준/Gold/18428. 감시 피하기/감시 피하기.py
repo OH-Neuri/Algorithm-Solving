@@ -1,3 +1,5 @@
+# 장애물놓기
+# 선생님 좌표에서 상하좌우 확인하기
 import sys
 input = sys.stdin.readline
 
