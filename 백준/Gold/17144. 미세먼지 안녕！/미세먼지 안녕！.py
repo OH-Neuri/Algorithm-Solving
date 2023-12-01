@@ -14,10 +14,10 @@ for i in range(R):
         cleaner_down = i+1
         break
 
+dx = [0, -1, 0, 1]
+dy = [1, 0, -1, 0]
 # 확산
 def spread():
-    dx = [0, -1, 0, 1]
-    dy = [1, 0, -1, 0]
 
     tmp_arr = [[0]*C for _ in range(R)]
     for i in range(R):
@@ -42,6 +42,7 @@ def air_up():
     dy = [1, 0, -1, 0]
     direct = 0
     before = 0
+    # 공기청정기 오른쪽에서 출발
     x, y = cleaner_up, 1
     while True:
         nx = x + dx[direct]
@@ -58,7 +59,7 @@ def air_up():
 
 def air_down():
     dx = [0, 1, 0, -1]
-    dy = [1, 0, -1, 0]
+
     direct = 0
     before = 0
     x, y = cleaner_down, 1

@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 31120 KB, 시간: 3312 ms
+메모리: 111804 KB, 시간: 484 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2023년 12월 1일 23:29:28
+2023년 12월 2일 00:00:56
 
 ### 문제 설명
 
@@ -49,11 +49,11 @@
 
 <p style="text-align: center;">왼쪽과 위쪽에 칸이 없기 때문에, 두 방향으로만 확산이 일어났다.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 268px; height: 100px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/cebebfa9-0056-45f1-b705-75b035888085/-/preview/" style="width: 268px; height: 100px;"></p>
 
 <p style="text-align: center;">인접한 네 방향으로 모두 확산이 일어난다.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 268px; height: 100px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/1ed0d2e9-9767-4b94-bbde-0e1d6a2d52ff/-/preview/" style="width: 268px; height: 100px;"></p>
 
 <p style="text-align: center;">공기청정기가 있는 칸으로는 확산이 일어나지 않는다.</p>
 
