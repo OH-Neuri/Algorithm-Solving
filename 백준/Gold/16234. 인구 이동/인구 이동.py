@@ -13,16 +13,17 @@ M = len(arr[0])
 def make_alliance():
     value_list = []
     visited = [[False]*M for _ in range(N)]
+
+    flag = False
+
     for i in range(N):
         for j in range(M):
             if not visited[i][j]:
-                value_list.append(BFS(i,j,visited))
+                if(BFS(i,j,visited)):
+                    flag = True
 
     # 더이상 연합이 생성되지 않는 경우
-    if len(value_list)==N*M:
-        return False
-    else:
-        return value_list
+    return flag
 
 def BFS(i,j,visited):
     q = deque()
@@ -30,7 +31,6 @@ def BFS(i,j,visited):
     value = arr[i][j]
     visited[i][j] = True
     position = [(i,j)]
-    cnt = 1
     while q:
         x, y = q.popleft()
 
@@ -40,27 +40,22 @@ def BFS(i,j,visited):
 
             if 0<=nx<N and 0<=ny<M and not visited[nx][ny]:
                 if L<=abs(arr[x][y]-arr[nx][ny])<=R:
-                    cnt+=1
                     visited[nx][ny] = True
                     position.append((nx,ny))
                     value += arr[nx][ny]
                     q.append((nx,ny))
 
-    return (value,cnt,position)
+    length = len(position)
+    for x,y in position:
+        arr[x][y] = value//length
 
+    return length >= 2
 answer = 0
 while True:
     # 더이상 연합을 만들 수 없을 때
     result = make_alliance()
     if not result:
         break
-    else:
-    # 인구이동
-        for value, cnt, positions in result:
-            if cnt == 1:
-                continue
-            for x, y in positions:
-                arr[x][y] = value // cnt
     answer +=1
 
 print(answer)
