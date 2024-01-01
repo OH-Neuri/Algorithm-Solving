@@ -1,28 +1,33 @@
 from collections import deque
+import sys
+input = sys.stdin.readline
 
-def bfs(start):
-    q = deque()
-    q.append(start)
-    visited[start] = start
-    while q:
-        c = q.popleft() #current
-        if c == k:
-            return c
-        for i in (c-1, c+1, 2*c):
-            if 0 <= i <= 100000 and i not in visited:
-                if i > c > k : continue
-                visited[i] = c
-                q.append(i)
-
-n, k = map(int, input().split())
+N, K = map(int,input().split())
 visited = dict()
-c = bfs(n)
-ans = deque()
-cnt = 0
+
+def BFS():
+    q = deque()
+    q.append(N)
+    visited[N] = N
+    while q:
+        n = q.popleft()
+        if n == K:
+            return n
+
+        for x in n+1, n-1, n*2:
+            if 0<=x<=100000 and x not in visited:
+                if x > n > K: continue
+                visited[x] = n
+                q.append(x)
+
+
+c = BFS()
+answer = deque()
+time = 0
 while visited[c] != c:
-    ans.appendleft(c)
+    answer.appendleft(c)
     c = visited[c]
-    cnt += 1
-ans.appendleft(c)
-print(cnt)
-print(*ans)
+    time += 1
+answer.appendleft(c)
+print(time)
+print(*answer)
