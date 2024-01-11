@@ -1,12 +1,14 @@
 def solution(routes):
     answer = 0
-    end = -30001
-    
-    for s, e in sorted(routes, key=lambda x:x[1]):
-        if s>end:
+    routes = sorted(routes, key=lambda x:(x[0],x[1]))
+    c = -30050
+    for s, e in routes:
+        if c < s:
+            c = e
             answer +=1
-            end = e
+        else:
+            if e < c:
+                c = e
     return answer
 
-# [-20,-15] [-18,-13] [-14,-5] [-5,-3]
-
+# print(solution([[-20,15], [-14,-5], [-18,-13], [-5,-3]])) #2
