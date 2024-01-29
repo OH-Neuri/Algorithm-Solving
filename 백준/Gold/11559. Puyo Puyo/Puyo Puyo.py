@@ -34,14 +34,16 @@ def explode_puyo(e):
     for i in range(len(e)):
         field[e[i][0]][e[i][1]] = '.'
     for i in range(6):
-        idx = -1
+        stack = []
         for j in range(11,-1,-1):
-            if idx != -1 and field[j][i] != '.':
-                field[idx][i] = field[j][i] # 내려오기
+            if field[j][i] !='.':
+                stack.append(field[j][i])
+        stack = stack[::-1]
+        for j in range(11,-1,-1):
+            if stack:
+                field[j][i] = stack.pop()
+            else:
                 field[j][i] = '.'
-                idx -= 1
-            if idx == -1 and field[j][i] == '.': # 맨 처음 빈공간 찾기
-                idx = j
 
 ep = 0
 while True:
