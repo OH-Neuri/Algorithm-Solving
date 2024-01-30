@@ -1,70 +1,57 @@
 import sys
-from collections import defaultdict
- 
-input_func = sys.stdin.readline
-if __name__ == '__main__':
-    A, B = map(int, input_func().split())
-    N, M = map(int, input_func().split())
- 
-    robots = defaultdict(tuple)
-    #문자로 입력받은 방향을 숫자로 변경시켜주기 위한 방향 맵핑 딕셔너리
-    directions = {'N': 0, 'W': 1, 'E': 3, 'S': 2}
-    for idx in range(N):
-        x, y, d = map(str, input_func().split())
-        #행 좌표(행 길이-입력행번호), 열 좌표(입력 열번호 - 1)
-        robots[idx + 1] = (B - int(y), int(x) - 1, directions[d])
- 
-    dx = [-1, 0, 1, 0]
-    dy = [0, -1, 0, 1]
-    flag = False
-    #명령을 입력받아 수행
-    for idx in range(M):
-        id, cmd, num = map(str, input_func().split())
-        #문자열로 입력받았으니 숫자로 변경
-        id, num = int(id), int(num)
-        robot_x, robot_y, robot_d = robots.pop(id)
- 
-        #명령 수행
-        if cmd == 'L':
-            #4번 회전하면 같은 방향
-            num %= 4
-            #방향은 4방향
-            robot_d = (robot_d + (1 * num)) % 4
-        elif cmd == 'R':
-            # 4번 회전하면 같은 방향
-            num %= 4
-            #방향은 4방향
-            robot_d = (robot_d + (3 * num)) % 4
-        elif cmd == 'F':
-            #반복 횟수만큼 한 칸씩 전진
-            for n in range(num):
-                robot_x += dx[robot_d]
-                robot_y += dy[robot_d]
- 
-                #범위 확인
-                if not 0 <= robot_x < B or not 0 <= robot_y < A:
-                    print('Robot {} crashes into the wall'.format(id))
-                    flag = True
-                    break
- 
-                #동일 위치 로봇 확인, 로봇 딕셔너리 값을 하나씩 비교
-                for key, value in robots.items():
-                    compare_x, compare_y, _ = value
-                    if robot_x == compare_x and robot_y == compare_y:
-                        print('Robot {} crashes into robot {}'.format(id, key))
-                        flag = True
+input = sys.stdin.readline
+
+A, B = map(int, input().split())
+N, M = map(int, input().split())
+
+# N : 0, E : 1, S: 2, W : 3
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
+robots = {}
+for i in range(1, N + 1):
+    x, y, d = map(str, input().rstrip().split())
+    if d == 'N':
+        d = 0
+    if d == 'E':
+        d = 1
+    if d == 'S':
+        d = 2
+    if d == 'W':
+        d = 3
+    robots[i] = [(int(x), int(y)), d]
+
+for _ in range(M):
+    rb_num, rb_d, times = map(str, input().rstrip().split())
+    rb_num = int(rb_num)
+    times = int(times)
+
+    fail1 = False # 배열 밖으로 나가는 경우 실패
+    x, y, d = robots[rb_num][0][0], robots[rb_num][0][1], robots[rb_num][1]
+    for _ in range(times):
+        fail2 = -1 # 로봇끼리 충돌한 경우 실패
+        if rb_d == 'L':
+            d = (d - 1) % 4
+        if rb_d == 'R':
+            d = (d + 1) % 4
+        if rb_d == 'F':
+            nx, ny = x + dx[d], y + dy[d]
+            if 0 < nx <= A and 0 < ny <= B:
+                for i in range(1,len(robots)+1):
+                    if i != rb_num and (nx,ny) == robots[i][0]: # 로봇끼리 충돌한 경우
+                        fail2 = i
                         break
-                #전진 반복문 종료
-                if flag:
-                    break
- 
-        #명령 수행 반복문 종료
-        if flag:
-            break
- 
-        #오류 발생하지 않으면, 로봇 딕셔너리에 현재 이동한 로봇 정보 업데이트하여 저장
-        robots[id] = (robot_x, robot_y, robot_d)
- 
-    #정상 종료(오류 발생 X)시 출력
-    if not flag:
-        print('OK')
+            else: # 배열 밖으로 나간 경우
+                fail1 = True
+                break
+            x, y = nx, ny
+        if fail2 != -1:
+            print(f"Robot {rb_num} crashes into robot {fail2}")
+            exit(0)
+    if fail1 :
+        print(f"Robot {rb_num} crashes into the wall")
+        exit(0)
+    else:
+        robots[rb_num][0] = (x, y)
+        robots[rb_num][1] = d
+
+print("OK")
