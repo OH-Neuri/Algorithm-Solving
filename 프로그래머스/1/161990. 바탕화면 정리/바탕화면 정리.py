@@ -1,18 +1,16 @@
 def solution(wallpaper):
-    L = 1e9
-    U = 1e9
-    R = 0
-    D = 0
+    L, U = 51, 51
+    R, D = -1, -1
     for i in range(len(wallpaper)):
         for j in range(len(wallpaper[0])):
-            if U>i and wallpaper[i][j] =='#':
+            if U == 51 and wallpaper[i][j] =='#':
                 U = i
             if L > j and wallpaper[i][j] =='#':
                 L=j    
-            if R<j and wallpaper[i][j] =='#':
+            if R < j and wallpaper[i][j] =='#':
                 R=j
-            if D<i and wallpaper[i][j] =='#':
+            if D < i and wallpaper[i][j] =='#':
                 D=i
                 
-    answer = [U,L,D+1,R+1]
+    answer = [U, L, D+1, R+1]
     return answer
