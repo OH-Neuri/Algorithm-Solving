@@ -1,32 +1,23 @@
 from heapq import heapify, heappop, heappush
 def solution(operations):
-    answer = [0,0]
-    min_heap = []
     max_heap = []
+    min_heap = []
     
-    for i in operations:
-        i = i.split(" ")
-        w = i[0] # 연산
-        v = int(i[1]) # 값
+    for operation in operations:
+        operation = operation.split(" ")
+        o = operation[0]
+        v = int(operation[1])
         
-        # 삽입
-        if w == "I":
-            heappush(min_heap,v)
+        if o == 'I':    # 삽입
             heappush(max_heap,-v)
-            
-        # 삭제
-        if w == "D" and min_heap: 
-            # 최댓값 삭제 
+            heappush(min_heap,v)
+        elif o == "D" and len(min_heap)!=0:   # 삭제
             if v == 1:
-                d = heappop(max_heap)
-                min_heap.remove(-d)
-            # 최솟값 삭제
-            if v == -1:
-                d = heappop(min_heap)
-                max_heap.remove(-d)
-        
-    if not min_heap:
-        return [0,0]
-    else:
-        return [max(min_heap), min(min_heap)]
+                max_value = heappop(max_heap)
+                min_heap.remove(-max_value)
+            else:
+                min_value = heappop(min_heap)
+                max_heap.remove(-min_value)
+
+    return  [0,0] if len(min_heap)==0 else [-heappop(max_heap),heappop(min_heap)]
 
