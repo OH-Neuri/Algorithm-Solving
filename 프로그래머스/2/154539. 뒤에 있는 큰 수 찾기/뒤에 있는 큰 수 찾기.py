@@ -1,10 +1,11 @@
 def solution(numbers):
-    l = len(numbers)
-    answer = [-1 for _ in range(l)]
+    answer = [-1 for _ in numbers]
+
     stack = []
-    
-    for i in range(l):
-        while stack and  numbers[stack[-1]] < numbers[i]:
-                answer[stack.pop()] = numbers[i]
+    for i in range(len(numbers)-1):
         stack.append(i)
+        if numbers[i] < numbers[i+1]:
+            while stack and numbers[stack[-1]] < numbers[i+1]:
+                answer[stack.pop()] = numbers[i+1]
+
     return answer
