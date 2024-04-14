@@ -1,20 +1,9 @@
 def solution(s):
-    answer = ''
-    s = list(s)
-    flag = False # 첫문자 확인
+    answer = []
+    s = s.split(" ")
     for word in s:
-        # 첫문자일 경우
-        if not flag:
-            flag = True
-            if word.islower():
-                answer += word.upper()
-                continue
+        if word:
+            answer.append(word[0].upper() + word[1:].lower())
         else:
-            if word.isupper():
-                answer += word.lower()
-                continue
-        answer += word
-        if word == ' ':
-            flag = False
-        
-    return answer
+            answer.append(word)
+    return " ".join(answer)
