@@ -1,38 +1,43 @@
+answer = []
+def rotate(matrix,queries) :
+    global answer
+    for q in queries :
+        l = []
+        y1,x1,y2,x2 = q[0]-1, q[1]-1, q[2]-1, q[3]-1
+        
+        start = matrix[y1][x1]
+        prev = matrix[y1][x1]
+        tmp = -1
+        current_x = x1 ; current_y = y1
+        move = [1,0]
+        
+        while( tmp != start) :
+            current_y += move[1]
+            current_x += move[0]
+            
+            tmp = matrix[current_y][current_x]
+            matrix[current_y][current_x] = prev
+            prev= tmp
+            
+            if( current_x == x2) :
+                move = [0,1]
+            if( current_y == y2 ) :
+                move = [-1,0]
+            if( current_x == x1) :
+                move = [0,-1]
+                
+            l.append(tmp)
+        answer.append(min(l))
+    
 def solution(rows, columns, queries):
-
-    answer = []
-    array = [[0 for col in range(columns)] for row in range(rows)]
-    t = 1
-    for row in range(rows):
-        for col in range(columns):
-            array[row][col] = t
-            t += 1
-
-    for x1,y1,x2,y2 in queries:
-        tmp = array[x1-1][y1-1]
-        mini = tmp
-
-        for k in range(x1-1,x2-1):
-            test = array[k+1][y1-1]
-            array[k][y1-1] = test
-            mini = min(mini, test)
-
-        for k in range(y1-1,y2-1):
-            test = array[x2-1][k+1]
-            array[x2-1][k] = test
-            mini = min(mini, test)
-
-        for k in range(x2-1,x1-1,-1):
-            test = array[k-1][y2-1]
-            array[k][y2-1] = test
-            mini = min(mini, test)
-
-        for k in range(y2-1,y1-1,-1):
-            test = array[x1-1][k-1]
-            array[x1-1][k] = test
-            mini = min(mini, test)
-
-        array[x1-1][y1] = tmp
-        answer.append(mini)
-
+    matrix = []
+    tmp = []
+    for i in range(1, (rows * columns +1) ) :
+        tmp.append(i)
+        if( len(tmp) == columns ):
+            matrix.append(tmp)
+            tmp = []
+        
+    rotate(matrix,queries)
+        
     return answer
