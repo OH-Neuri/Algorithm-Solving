@@ -1,4 +1,4 @@
 function solution(s) {
-    var answer = s.split(' ').map(i=>Number(i))
-    return Math.min.apply(null,answer)+" "+ Math.max.apply(null,answer);
+    var answer = s.split(" ").map(Number)
+    return Math.min(...answer)+ " "+Math.max(...answer);
 }
