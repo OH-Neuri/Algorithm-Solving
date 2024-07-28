@@ -1,16 +1,11 @@
 function solution(s){
-    let stack = []
+    let sum = 0
     for(t of s){
-        if(!stack || t == "("){
-            stack.push(t)
-        }else{
-            if(stack[stack.length-1]=="("){
-                stack.pop()
-            }else{
-                stack.push(t)
-            }
+        sum += t ==="("? 1: -1
+        if(sum<0){
+            return false
         }
     }
 
-    return stack.length==0?true:false;
+    return sum==0?true:false;
 }
