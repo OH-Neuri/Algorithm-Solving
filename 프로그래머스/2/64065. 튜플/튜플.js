@@ -1,11 +1,19 @@
 function solution(s) {
-    let answer = [];
-    let tuples = s.slice(2, -2).split(/},{/g).sort((a, b) => a.length - b.length);
+  const result = [];
+  const tuples = JSON.parse(s.replace(/{/g, "[").replace(/}/g, "]")).sort(
+    (a, b) => a.length - b.length
+  );
+  
+  const set = new Set();
 
-    tuples.forEach(v => {
-        let tuple = v.split(',');
-        answer.push(tuple.find(e => !answer.includes(e)));
-    });
+  for (let tuple of tuples) {
+    for (let v of tuple) {
+      if (!set.has(v)) {
+        set.add(v);
+        result.push(v);
+      }
+    }
+  }
 
-    return answer.map(e => Number(e));
+  return result;
 }
