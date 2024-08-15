@@ -14,7 +14,7 @@ var lemonadeChange = function (bills) {
         if (bill == 20) {
             if (money[0] <= 0) return false
             if (money[0] < 3 && money[1] < 1) return false
-            if (money[1]>1) { 
+            if (money[1]>=1) { 
                 money[1] -= 1
                 money[0] -= 1
              } else {
