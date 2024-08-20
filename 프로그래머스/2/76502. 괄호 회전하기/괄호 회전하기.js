@@ -1,24 +1,32 @@
-function solution(s) {
-    const stack = [];
-    let result = 0;
-    let isRight = true;
-    if (s.length % 2 === 1) return 0;
 
-    for (let i = 0; i < s.length; i++){
-        let candidate = s.slice(i) + s.slice(0, i);
-        isRight = true;
-        for (let word of candidate) {
-            if (word === "(" || word === "{" || word === "[") stack.push(word);
-            else {
-                let leftWord = stack.pop();
-                if (word === ")" && leftWord === "(") continue;
-                if (word === "}" && leftWord === "{") continue;
-                if (word === "]" && leftWord === "[") continue;
-                isRight = false;
-                break;
-            }
+function solution(s) {
+    var answer = 0;
+    let list = check(s)
+    const regex1 = /(\(\))/g
+    const regex2 = /(\{\})/g
+    const regex3 = /(\[\])/g
+    for(let i = 0; i<list.length;i++){
+        let num=0
+        while(list[i].match(regex1)||list[i].match(regex2)||list[i].match(regex3)){
+
+           list[i]= list[i].replace(regex1, '').replace(regex2, '').replace(regex3, '');
         }
-        if (isRight) result++;
+             
+        if(list[i].length===0){
+            answer++
+        }
     }
-    return result;
+    return answer;
+}
+function check (s){
+    s = s.split('')
+    const list = [];
+    const num = s.length;
+    for(let i =0; i<num;i++){
+        
+    let temp = s.shift();
+    s.push(temp)
+    list.push(s.join(''))
+    }
+    return list
 }
