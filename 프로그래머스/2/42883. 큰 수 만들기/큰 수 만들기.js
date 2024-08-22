@@ -1,12 +1,15 @@
 function solution(number, k) {
-  const arr = [];
-  for (let i = 0; i < number.length; i++) {
-    while (arr.length > 0 && arr[arr.length - 1] < number[i] && k > 0) {
+  const stack = [];
+
+  for (const num of number) {
+    while (k > 0 && stack[stack.length - 1] < num) {
+      stack.pop();
       k--;
-      arr.pop();
     }
-    arr.push(number[i]);
+    stack.push(num);
   }
-  arr.splice(number.length - k, k); 
-  return arr.join("");
+
+  stack.splice(stack.length - k, k);
+
+  return stack.join("");
 }
