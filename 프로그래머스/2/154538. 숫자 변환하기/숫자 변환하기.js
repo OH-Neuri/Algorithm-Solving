@@ -1,10 +1,24 @@
 function solution(x, y, n) {
-    const dp = new Array(y+1).fill(Infinity);
-    dp[x] = 0;
-    for(let i=x; i<=y; i++){
-        dp[i+n] = Math.min(dp[i+n],dp[i]+1);
-        dp[i*2] = Math.min(dp[i*2],dp[i]+1);
-        dp[i*3] = Math.min(dp[i*3],dp[i]+1);
+ 
+    if(x===y){
+        return 0;
+    }else if(x>y){
+        return -1;
     }
-    return dp[y]!==Infinity? dp[y] : -1;
+    
+    let countArray = Array(y+1).fill(Infinity)
+    countArray[x] = 0;
+    
+    for(i=x+1; i<y+1; ++i){
+        if(i-n>=x){
+            countArray[i] = Math.min(countArray[i],countArray[i-n]+1)
+        }
+        if(i%2===0&&i/2>=x){
+            countArray[i] = Math.min(countArray[i],countArray[i/2]+1)         
+        }
+        if(i%3===0&&i/3>=x){
+            countArray[i] = Math.min(countArray[i],countArray[i/3]+1)         
+        }
+    }
+    return countArray[y]===Infinity? -1:countArray[y]
 }
