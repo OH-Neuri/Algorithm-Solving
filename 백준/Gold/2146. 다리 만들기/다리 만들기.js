@@ -30,6 +30,7 @@ function connect(start, currentLandVisited) {
         } else {
           // 다른 육지
           minBridge = Math.min(minBridge, bridge);
+          return 
         }
       }
     }
