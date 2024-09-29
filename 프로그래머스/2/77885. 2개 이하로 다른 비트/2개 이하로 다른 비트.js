@@ -1,13 +1,11 @@
 function solution(numbers) {
-    return numbers.map(v => {
-        let str = '0'+v.toString(2);
-        if(str[str.length-1] === '0') {
-            str = str.substring(0, str.length-1) + '1';
-        } else {
-            const idx = str.lastIndexOf('01');
-            str = str.substring(0,idx) + '10' + str.substring(idx+2, str.length);
-        }
-        
-        return parseInt(str, 2);
-    })
+  function f(x) {
+    if (x % 2 === 0) return x + 1;
+    let bit = "0" + x.toString(2);
+    let idx = bit.lastIndexOf("0");
+    return parseInt(`${bit.slice(0, idx)}10${bit.slice(idx + 2)}`, 2);
+  }
+  const answer = [];
+  for (let number of numbers) answer.push(f(number));
+  return answer;
 }
