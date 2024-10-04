@@ -1,48 +1,38 @@
 function solution(m, n, board) {
-    board = board.map((x) => x.split(""));
-    
-    while(1) {
-        const blocks = [];
-        for (let i = 0; i < m - 1; i++) {
-            for (let j = 0; j < n - 1; j++) {
-                if (board[i][j] && board[i][j] === board[i + 1][j] && board[i][j] === board[i + 1][j + 1] && board[i][j] === board[i][j + 1]) {
-                    blocks.push([i, j]);
+    board = board.map(v => v.split(''));
+
+    while (true) {
+        let founded = [];
+
+        // 찾기
+        for (let i = 1; i < m; i++) {
+            for (let j = 1; j < n; j++) {
+                if (board[i][j] && board[i][j] === board[i][j - 1] && board[i][j] === board[i - 1][j - 1] && board[i][j] === board[i - 1][j]) {
+                    founded.push([i, j]);
                 }
             }
         }
-        
-        if (!blocks.length) {
-            return [].concat(...board).filter((x) => !x).length;
-        }
-        
-        for (let numbers of blocks) {
-            let [i, j] = numbers;
-            board[i][j] = 0;
-            board[i + 1][j] = 0;
-            board[i + 1][j + 1] = 0;
-            board[i][j + 1] = 0;
-        }
-        
+
+        if (! founded.length) return [].concat(...board).filter(v => ! v).length;
+
+        // 부수기
+        founded.forEach(a => {
+            board[a[0]][a[1]] = 0;
+            board[a[0]][a[1] - 1] = 0;
+            board[a[0] - 1][a[1] - 1] = 0;
+            board[a[0] - 1][a[1]] = 0;
+        });
+
+        // 재정렬
         for (let i = m - 1; i > 0; i--) {
-            if (!board[i].some((v) => !v)) continue;
-            
+            if (! board[i].some(v => ! v)) continue;
+
             for (let j = 0; j < n; j++) {
-            const zero = [];
-            const text = [];
-            
-            for (let i = m - 1; i >= 0; i--) {
-                !board[i][j] ? zero.push(i) : text.push(i);
-            }
-            
-            if (zero.length !== m) {
-                for (let idx in zero) {
-                    for (let textIdx in text) {
-                        if (zero[idx] > text[textIdx]) {
-                            board[zero[idx]][j] = board[text[textIdx]][j];
-                            board[text[textIdx]][j] = 0;
-                            break;
-                            }
-                        }
+                for (let k = i - 1; k >= 0 && ! board[i][j]; k--) {
+                    if (board[k][j]) {
+                        board[i][j] = board[k][j];
+                        board[k][j] = 0;
+                        break;
                     }
                 }
             }
