@@ -1,28 +1,34 @@
 function solution(queue1, queue2) {
-    var answer = 0;
-    var queueSum1 = 0;
-    queue1.forEach(element=>queueSum1+=element);
-    var queueSum2 = 0;
-    queue2.forEach(element=>queueSum2+=element);
-    var totalLen = queue1.length+ queue2.length;
-    var queue1Index = 0;
-    var queue2Index = 0;
+    const queue = [...queue1, ...queue2];
+    let sq1 = queue1.reduce(sum, 0);
+    let sq2 = queue2.reduce(sum, 0);
     
-    while(queueSum1 !== queueSum2){
-        if(queueSum1>queueSum2){
-            queueSum1 -= queue1[queue1Index];
-            queue2.push(queue1[queue1Index]);
-            queueSum2 +=queue1[queue1Index++];
+    if (sq1 === sq2) return 0;
+    
+    const t_sum = (sq1+sq2);
+
+    if (t_sum%2 != 0) return -1;
+    
+    const h_sum = t_sum/2;
+    let start = 0;
+    let end = queue1.length;
+    let cnt = 0;
+    
+    while(cnt <= queue.length*3) {
+        if (h_sum === sq1) {
+            return cnt;
+        } else if (h_sum > sq1){
+            sq1 += queue[end];
+            end++;
+        } else {
+            sq1 -= queue[start];
+            start++;
         }
-        else{
-             queueSum1 += queue2[queue2Index];
-             queue1.push(queue2[queue2Index]);
-             queueSum2 -=queue2[queue2Index++];
-        }
-         answer++;
-        if(queue1Index>totalLen||queue2Index>totalLen){
-            return -1;
-        }
+        
+        cnt++;
     }
-    return answer;
+    
+    return -1;
 }
+
+const sum = (a, b) => a + b;
