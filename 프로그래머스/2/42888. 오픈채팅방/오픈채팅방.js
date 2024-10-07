@@ -1,6 +1,6 @@
 function solution(record) {
     let answer = [];
-    const map = new Map();
+    const map = {};
     
     for (let i = 0; i < record.length; ++i) {
         const [state, uid, name] = record[i].split(' ');
@@ -15,8 +15,8 @@ function solution(record) {
             answer.push([uid, '님이 들어왔습니다.']);
         }
 
-        map.set(uid, name);
+        map[uid] = name;
     }
     
-    return answer.map(ele => map.get(ele[0]) + ele[1]);
+    return answer.map(ele => map[ele[0]] + ele[1]);
 }
