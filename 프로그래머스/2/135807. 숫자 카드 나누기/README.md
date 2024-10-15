@@ -1,10 +1,10 @@
 # [level 2] 숫자 카드 나누기 - 135807 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/135807?language=javascript) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/135807) 
 
 ### 성능 요약
 
-메모리: 33.6 MB, 시간: 0.09 ms
+메모리: 79.1 MB, 시간: 51.63 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 14일 17:02:53
+2024년 10월 15일 23:19:09
 
 ### 문제 설명
 
