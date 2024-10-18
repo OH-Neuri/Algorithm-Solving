@@ -1,31 +1,23 @@
-function solution(board) {
-  let maxLen = 0;
-  let m = board.length;
-  let n = board[0].length;
+function solution(board)
+{
+    let answer = 0;
+    let row = board.length;
+    let col = board[0].length;
 
-  if (m <= 1 || n <= 1) {
-    return 1;
-  }
+    if(row < 2 || col < 2) return 1;
 
-  for (let i = 1; i < m; i++) {
-    for (let j = 1; j < n; j++) {
-      if (board[i][j] === 0) {
-        continue;
-      } else {
-        let minNum = Math.min(
-          board[i - 1][j],
-          board[i][j - 1],
-          board[i - 1][j - 1]
-        );
-
-        board[i][j] = minNum + 1;
-
-        if (board[i][j] > maxLen) {
-          maxLen = board[i][j];
+    for(let i = 1; i < row; i++) {
+        for(let j = 1; j < col; j++) {
+            if(board[i][j] !== 0) {
+                let min = Math.min(
+                    board[i-1][j-1],
+                    board[i-1][j],
+                    board[i][j-1]
+                );
+                board[i][j] = min + 1;
+            }
+            if(answer < board[i][j]) answer = board[i][j];
         }
-      }
     }
-  }
-
-  return maxLen * maxLen;
+    return answer * answer;
 }
