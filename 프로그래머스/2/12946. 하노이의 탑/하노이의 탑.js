@@ -1,17 +1,15 @@
 function solution(n) {
-    
-    var answer = [];
-    
-    function Hanoi(num, from, other, to){
-    if(num === 0) {
-        return;
-    }else{
-        
-        Hanoi(num - 1 , from, to, other);
-        answer.push([from, to]);
-        Hanoi(num - 1, other, from, to);
+  let answer = [];
+  
+  const hanoi = (n, start, mid, end) => {
+    if (n === 1) answer.push([start,end])
+    else {
+      hanoi(n-1, start, end, mid)
+      answer.push([start,end])
+      hanoi(n-1, mid, start, end)
     }
-}
-    Hanoi(n,1,2,3);
-    return answer;
+  }
+  
+  hanoi(n, 1, 2, 3)
+  return answer
 }
