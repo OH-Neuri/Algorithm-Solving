@@ -10,24 +10,19 @@ function solution(board) {
     
     board.forEach((items, i) => {
         items.forEach((item, j) => {
-            if(item === 'R') q.push([i, j]);  // 시작 위치
+            if(item === 'R') q.push([i, j]);  
         });
     });
 	
     board[q[0][0]][q[0][1]] = 'O';   
-    
     while(q.length) {
-    
         const size = q.length;
-        
         for(let i=0; i<size; i++) {
             const [x, y] = q.shift();
-          
-            for(let j=0; j<4; j++) {
             
+            for(let j=0; j<4; j++) {
                 let nx = x + dx[j];
                 let ny = y + dy[j];
-                
                 while(nx >= 0 && nx < n && ny >= 0 && ny < m && board[nx][ny] !== 'D') {
                     nx += dx[j];
                     ny += dy[j];
@@ -37,9 +32,7 @@ function solution(board) {
                 ny -= dy[j];
                 
                 if(board[nx][ny] === 'G') return answer+1;
-                
                 if(board[nx][ny] !== 'O') {
-                
                     board[nx][ny] = 'O';
                     q.push([nx, ny]);
                 }
