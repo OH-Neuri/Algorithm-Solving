@@ -1,18 +1,20 @@
 function solution(data, col, row_begin, row_end) {
-  let answer = 0;
+    const sortedData = sortData(data,col-1);
+    const sliceData = sortedData.slice(row_begin-1,row_end);
+    
+    const result = sliceData.map((tp,i)=>
+        tp.reduce((ac,cur)=> (cur%(row_begin+i)) + ac ,0)
+    )
+    
+    return result.reduce((ac,cur)=> ac ^ cur , 0);
+}
 
-  const sort_data = data.sort((a, b) => {
-    if (a[col - 1] < b[col - 1]) {
-      return a[col - 1] - b[col - 1];
-    } else if (a[col - 1] === b[col - 1]) {
-      return b[0] - a[0];
-    }
-  });
-
-  for (let i = row_begin; i <= row_end; i++) {
-    const temp = sort_data[i - 1].reduce((a, c) => a + (c % i), 0);
-    answer ^= temp;
-  }
-
-  return answer;
+function sortData(data, targetCol){
+    return data.sort((a,b)=> {
+        if(a[targetCol] === b[targetCol]){
+            return b[0]- a[0];
+        }
+        return a[targetCol] - b[targetCol];
+    })
+    
 }
