@@ -1,49 +1,33 @@
 function solution(rows, columns, queries) {
-    const answer = [];
-    const board = [...Array(rows)].map(() => [...Array(columns)].fill(0));
-    
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < columns; j++) {
-            board[i][j] = (i * columns) + (j+1);
-        }
-    }
-    
-    for (let query of queries) {
-        const minNum = rotation(board, query);
-        answer.push(minNum);
-    }
-    
-    return answer;
-}
+  const map = Array.from({ length: rows }, (_, i) => {
+    return Array.from({ length: columns }, (__, j) => i * columns + j + 1);
+  });
+  const answer = [];
 
-function rotation(board, query) {
-    let [x1,y1,x2,y2] = query;
-    x1 -=1; y1 -=1; x2 -=1; y2 -=1;
-
-    let temp = board[x1][y1];
-    let minNum = temp;
-    
-    for (let i=x1; i < x2; i++) {
-        const moveCell = board[i+1][y1];
-        board[i][y1] = moveCell;
-        minNum = Math.min(minNum, moveCell);
+  queries.forEach(([sx, sy, tx, ty]) => {
+    [sx, sy, tx, ty] = [sx - 1, sy - 1, tx - 1, ty - 1];
+    let x = sx,
+      y = sy;
+    let tmp = map[x][y];
+    let min = Number.MAX_SAFE_INTEGER;
+    while (true) {
+      min = min > tmp ? tmp : min;
+      if (x === sx && y < ty) {
+        [map[x][y + 1], tmp] = [tmp, map[x][y + 1]];
+        y++;
+      } else if (y === ty && x < tx) {
+        [map[x + 1][y], tmp] = [tmp, map[x + 1][y]];
+        x++;
+      } else if (x === tx && y > sy) {
+        [map[x][y - 1], tmp] = [tmp, map[x][y - 1]];
+        y--;
+      } else if (y === sy && x > sx) {
+        [map[x - 1][y], tmp] = [tmp, map[x - 1][y]];
+        x--;
+        if (y === sy && x === sx) break;
+      }
     }
-    for (let i=y1; i < y2; i++) {
-        const moveCell = board[x2][i+1];
-        board[x2][i] = moveCell;
-        minNum = Math.min(minNum, moveCell);
-    }
-    for (let i=x2; i > x1; i--) {
-        const moveCell = board[i-1][y2];
-        board[i][y2] = moveCell;
-        minNum = Math.min(minNum, moveCell);
-    }
-    for (let i=y2; i > y1; i--) {
-        const moveCell = board[x1][i-1];
-        board[x1][i] = moveCell;
-        minNum = Math.min(minNum, moveCell);
-    }
-    
-    board[x1][y1+1] = temp;
-    return minNum;
+    answer.push(min);
+  });
+  return answer;
 }
