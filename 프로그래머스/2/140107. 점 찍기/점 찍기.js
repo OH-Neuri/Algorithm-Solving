@@ -1,8 +1,11 @@
 function solution(k, d) {
-    let answer = 0;
-    for(let x=0; x<=d; x+=k){
-        let y = parseInt(Math.sqrt(d**2 - x**2));
-        answer += parseInt(y/k)+1;
+    var answer = 0;
+    function yFun(x){
+        return (Math.floor(Math.sqrt(d*d-x*x)));
+    }
+    
+    for(var x = 0;x<=d;x+=k){
+        answer+=((Math.floor(yFun(x)/k))+1);
     }
     return answer;
 }
