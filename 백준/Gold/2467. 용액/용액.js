@@ -21,10 +21,10 @@ while (start < end) {
     answer = [nums[start], nums[end]];
   }
 
-  if (sum > 0) {
+  if (sum > 0) { // 양수일경우 end 이동
     end--;
   } else {
-    start++;
+    start++;	 // 음수일경우 start 이동
   }
 }
 
