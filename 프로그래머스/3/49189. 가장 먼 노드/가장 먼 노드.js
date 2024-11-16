@@ -1,35 +1,44 @@
 function solution(n, edge) {
-    let visited = Array.from({length:n+1},()=>0)
-    let graph = Array.from({length:n+1},()=>[])
-    visited[1] = 1
     
+    let graph = Array.from({length:n+1},()=>[])
     for(let [s,e] of edge){
         graph[s].push(e)
         graph[e].push(s)
     }
     
-    let max = 0
-    const BFS = () =>{
-        let queue = [[1,1]]
-        while(queue.length){
-            let [cn,ct] = queue.shift()
-            
-            for(let next of graph[cn]){
-                if(!visited[next]){
-                    visited[next] = ct+1
-                    queue.push([next,ct+1])
-                }
+    let maxDist = 0
+    let visited = Array(n+1).fill(0)
+    visited[1] = 1
+    
+    let queue = []
+    let begin = 0
+    let end = 1
+    queue.push([1]) // node
+    
+    while(begin < end){
+        const curr = queue[begin++]
+        
+        maxDist = Math.max(maxDist, visited[curr])
+        
+        for(let next of graph[curr]){
+            if(visited[next]==0){
+                visited[next] = visited[curr] + 1;
+                queue.push([next])
+                end++;
             }
         }
     }
     
-    BFS()
-    var answer = 0;
-    
-    let maxVisited = Math.max(...visited)
-    for(let v of visited){
-        if(v===maxVisited) answer +=1
+    let maxCnt = 0
+    visited.sort((a,b)=>b-a)
+    for(let num of visited){
+        if(visited[0]===num) {
+            maxCnt++
+        }
+        else{ 
+            break
+        }
     }
 
-    return answer;
+    return maxCnt;
 }
