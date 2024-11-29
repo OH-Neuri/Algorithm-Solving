@@ -1,66 +1,50 @@
-//pccp 모의고사 2번
 function solution(land) {
-  let queue = [[0, 0]]; //bfs 큐 (y, x)
-  const dx = [-1, 1, 0, 0]; //좌우 이동
-  const dy = [0, 0, -1, 1]; //상하 이동
-  const n = land.length; //y 길이
-  const m = land[0].length; //x 길이
-  let oilMap = new Map(); //{열 idx : 얻을 수 있는 석유량}
-
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      let indexSet = new Set(); //석유덩어리를 얻을 수 있는 열의 Index set
-      let tempCount = 0; //석유덩어리의 석유량을 저장해줄 변수
-      if (land[j][i] === 1) {
-        queue = [[j, i]];
-        while (queue.length > 0) {
-          let [y, x] = queue.shift();
-          if (land[y][x] === 1) {
-            land[y][x] = 0;
-            tempCount++;
-            if (!indexSet.has(x)) indexSet.add(x);
-
-            for (let k = 0; k < 4; k++) {
-              let ny = y + dy[k];
-              let nx = x + dx[k];
-
-              if (
-                nx >= 0 &&
-                ny >= 0 &&
-                nx < m &&
-                ny < n &&
-                land[ny][nx] === 1
-              ) {
-                queue.push([ny, nx]);
-              }
+    
+    const rLen = land.length
+    const cLen = land[0].length
+    
+    const dc = [1,0,-1,0]
+    const dr = [0,1,0,-1]
+    
+    const retAry = Array(cLen).fill(0)
+    
+    const dfs = (r,c) => {
+        let ret = 0
+        const stk = [[r,c]]
+        let minC = c
+        let maxC = c
+        
+        while(stk.length){
+            const [r,c] = stk.pop()
+            minC = Math.min(c,minC)
+            maxC = Math.max(c,maxC)
+            if(visited[r][c]) continue
+            visited[r][c] = true
+            ret += 1
+            for (let d = 0 ; d < 4 ; d++){
+                const [nR,nC] = [r + dr[d] , c + dc[d]]
+                if(0<=nR&&nR<rLen&&0<=nC&&nC<cLen&&!visited[nR][nC]&&land[nR][nC]===1){
+                    stk.push([nR,nC])
+                }
             }
-          }
         }
-      }
-      if (tempCount !== 0) {
-        for (let idx of indexSet) {
-          oilMap.set(
-            idx,
-            oilMap.has(idx) ? oilMap.get(idx) + tempCount : tempCount
-          );
+        
+        for (let i = minC ; i <= maxC ; i++){
+            retAry[i] += ret
         }
-      }
     }
-  }
-
-  const answer = Math.max(...oilMap.values());
-  console.log(answer);
-  return answer;
+    
+    
+    
+    const visited= new Array(rLen).fill().map(_ => new Array(cLen).fill(0));
+    for (let i = 0 ; i < rLen ; i++){
+        for (let j = 0 ; j < cLen ; j++){
+            if(!visited[i][j]&&land[i][j]===1){
+                dfs(i,j)
+            }
+        }
+    }
+    
+    return Math.max(...retAry)
+    
 }
-
-const init = () => {
-  solution([
-    [1, 1, 1, 1, 0],
-    [1, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1],
-    [1, 0, 0, 1, 0],
-    [1, 1, 0, 1, 0],
-  ]);
-};
-
-init();
