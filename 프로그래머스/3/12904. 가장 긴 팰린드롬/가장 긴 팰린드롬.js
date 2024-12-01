@@ -1,28 +1,33 @@
+// 논리 명확하게 설정(마법수 4 넘어가지 않게)
+// 문제 분석
+
 function solution(s){
-    var answer = 1;
+    var answer = 0;
+    let len = s.length;
     
-    for(let i=0; i<s.length; i++){
-        // 바로 앞 검사
-        if(s[i] && s[i+1] && s[i] == s[i+1]){
-            let sIdx = i
-            let eIdx = i+1
-            while(s[sIdx] && s[eIdx] && s[sIdx] == s[eIdx]){
-                sIdx -=1
-                eIdx +=1
-                answer = Math.max(answer, (eIdx-sIdx-1))
+    for(let i=0;i < len; i++){
+        
+        //1. 홀수
+        let dist = 0
+        while(i - dist >= 0 && i + dist <= len){
+            if(s[i-dist] == s[i+dist]){
+                answer = Math.max(answer, dist*2+1)
+            dist++;
+                
+            }else{
+                break;
             }
         }
-        // 양옆 검사
-        if(s[i-1] && s[i+1] && s[i-1] == s[i+1]){
-            let sIdx = i-1
-            let eIdx = i+1
-            while(s[sIdx] && s[eIdx] &&  s[sIdx] == s[eIdx]){
-                sIdx -=1
-                eIdx +=1
-                answer = Math.max(answer, (eIdx-sIdx-1))
+        dist = 0
+        //2. 짝수
+        while(i - dist >= 0 && (i+1) + dist <= len){
+            if(s[i-dist] == s[(i+1) + dist]){
+                answer = Math.max(answer, dist*2+2)
+                dist++;
+            }else{
+                break;
             }
         }
     }
-    
     return answer;
 }
