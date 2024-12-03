@@ -1,16 +1,15 @@
 function solution(n, works) {
-    works = works.sort((a,b)=>a-b)
-    let len = works.length
-    while(n>0){
-        let max = works[len-1]
-        let idx = 1
-        while(max <= works[len-idx] && n>0){
-            n-=1
-            works[len-idx] -=1
-            if(works[len-idx] ==-1) return 0
-            idx +=1
-        }
-    }
-    console.log(works)
-    return works.reduce((total,value)=>total + value**2 ,0);
+    if(n >= works.reduce((acc,cur) => acc + cur)) return 0;
+    works.sort((a,b) => b-a)
+    while(n != 0) {
+        const max = works[0]
+        for(i=0 ; i<works.length; i++) {
+            if(works[i] >= max) {
+                n--
+                works[i]--
+            }
+            if(!n) break
+        };
+    };
+    return works.reduce((acc,cur) => acc + cur**2 , 0 )
 }
