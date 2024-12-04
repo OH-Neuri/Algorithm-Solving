@@ -1,11 +1,13 @@
-function solution(s){
-    let sum = 0
-    for(t of s){
-        sum += t ==="("? 1: -1
-        if(sum<0){
-            return false
+function solution(s){    
+    const stack = [];
+    
+    for(let i = 0; i < s.length; i++) {
+        if (stack[stack.length - 1] === '(' && s[i] === ')') {
+            stack.pop();
+        } else {
+            stack.push(s[i]);
         }
     }
-
-    return sum==0?true:false;
+    
+    return !stack.length;
 }
