@@ -1,19 +1,18 @@
 function solution(k, tangerine) {
-  let answer = 0;
-  const tDict = {};
+  var count = 0;
 
-  // 중복 값 개수 count
-  tangerine.forEach((t) => (tDict[t] = (tDict[t] || 0) + 1));
+  const sizeObject = tangerine.reduce((acc, cur) => {
+    acc[cur] = (acc[cur] || 0) + 1;
+    return acc;
+  }, {});
 
-  // value(중복 값 개수)를 내림차순으로 정렬
-  const tArr = Object.values(tDict).sort((a, b) => b - a);
+  let sizeArr = Object.values(sizeObject).sort((a, b) => b - a);
 
-  // 필요한 귤만큼 가짓수를 더해줍니다
-  for (const t of tArr) {
-    answer++;
-    if (k > t) k -= t;
-    else break;
+  for (i = 0; i < sizeArr.length; i++) {
+    k = k - sizeArr[i];
+    count++;
+    if (k <= 0) break;
   }
 
-  return answer;
+  return count;
 }
