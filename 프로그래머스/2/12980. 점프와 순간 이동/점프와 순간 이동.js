@@ -1,13 +1,14 @@
-function solution(n)
-{
-    let ans = 0;
-    while (n !== 0) {
-        if (n % 2 === 1) {
-            ans++;
-            n -= 1;
-        } else {
-            n /= 2;
-        }
+function solution(n) {
+  let answer = 0;
+
+  while (n !== 0) {
+    if (Number.isInteger(n / 2)) {
+      n /= 2;
+    } else {
+      n -= 1;
+      answer += 1;
     }
-    return ans;
+  }
+
+  return answer;
 }
