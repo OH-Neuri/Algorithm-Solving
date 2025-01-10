@@ -1,17 +1,20 @@
 function solution(n, s) {
-    if(n>s) return [-1] 
-    let quotient = Math.floor(s/n)
-    let remainder = s%n
-    let answer = []
+    if(n>s) return [-1];
+    var answer = [];
     
+    let first = Math.floor(s/n)
     for(let i=0;i<n;i++){
-        let number = quotient
-        if(remainder) {
-            number +=1
-            remainder-=1
-        }
-        answer.push(number)
+        answer.push(first)
     }
-    answer.sort((a,b)=>a-b)
-    return answer
+    
+    let idx = 0
+    let second = s%n
+    
+    while(second!==0){
+        answer[idx] +=1
+        second--;
+        idx++;
+    }
+    
+    return answer.sort();
 }
