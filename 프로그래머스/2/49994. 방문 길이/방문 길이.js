@@ -2,6 +2,7 @@ function solution(dirs) {
     const move = { U: [0, 1], D: [0, -1], R: [1, 0], L: [-1, 0] };
     let cur = [0, 0];
     const moveList = new Set();
+    
     for (const dir of dirs) {
         const nextX = cur[0] + move[dir][0];
         const nextY = cur[1] + move[dir][1];
