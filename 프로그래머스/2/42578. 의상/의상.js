@@ -1,17 +1,16 @@
 function solution(clothes) {
-    const clothesMap = {};
-    let answer = 1;
-    clothes.forEach(arr => {   
-        const [type, name] = arr;
-        if(clothesMap.hasOwnProperty(name)) {	
-            clothesMap[name]++;    	
-        }
-        else {
-            clothesMap[name] = 1;  
-        }
-    })
-    for(const key in clothesMap) {
-        answer *= (clothesMap[key] + 1);		
+    var answer = 1;
+    let cMap = new Map();
+    
+    for(let [c, k] of clothes) {
+        if(cMap.has(k)) cMap.set(k, cMap.get(k) + 1);
+        else cMap.set(k, 1);
     }
-    return answer - 1;
+    
+    for(let i of cMap.values()) {
+        answer *= (i+1)
+    }
+    
+    answer -= 1;
+    return answer;
 }
