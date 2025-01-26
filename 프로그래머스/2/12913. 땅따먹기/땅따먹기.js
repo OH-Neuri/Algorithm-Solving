@@ -1,15 +1,19 @@
+// 다른 분의 풀이 (1)
 function solution(land) {
+    let answer = 0;
     
-    var landLen = land.length;
-    
-    for(var i = 0; i<land.length-1;i++){
-        land[i+1][0] += Math.max(land[i][1],land[i][2],land[i][3]);
-        land[i+1][1] += Math.max(land[i][0],land[i][2],land[i][3]);
-        land[i+1][2] += Math.max(land[i][0],land[i][1],land[i][3]);
-        land[i+1][3] += Math.max(land[i][0],land[i][1],land[i][2]);
+    for(let i = 0; i < land.length; i++){
+       for(let j = 0; j < 4; j++){
+           if(i === 0){
+               continue;
+           } else {
+               let arr = land[i-1].slice();
+               arr[j] = 0;
+               land[i][j] += Math.max.apply(null, arr);
+               answer = Math.max(land[i][j], answer);
+           }
+       }       
     }
     
-    var maxSum = Math.max(land[landLen-1][0],land[landLen-1][1],land[landLen-1][2],land[landLen-1][3])
-
-    return maxSum;
+    return answer;
 }
