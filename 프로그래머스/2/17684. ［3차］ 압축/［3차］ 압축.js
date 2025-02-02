@@ -1,19 +1,26 @@
 function solution(msg) {
-  const words = ['A', 'B', 'C', 'D', 'E', 'F', 
-                'G', 'H', 'I', 'J', 'K', 'L', 'M', 
-                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
-                'U', 'V', 'W', 'X', 'Y', 'Z'];
-  let before = "";
-  const answer = [];
-  for (let i = 0; i < msg.length; i++) {
-    before += msg[i];
-    if (!words.includes(before)) {
-      answer.push(words.indexOf(before.slice(0, -1)) + 1);
-      words.push(before);
-      before = msg[i];
+    let map = new Map();
+    let answer = [];
+    let index = 27;
+    let w = "";
+    let c = "";
+    let temp = 0;
+    
+    for(let i = 0; i < msg.length; i++){
+        w = msg[i];
+        c = msg[i+1];
+       if(!map.get(w+c)){
+           map.set(w+c,index++);
+           answer.push(w.charCodeAt()-64);
+       }else{
+           while(map.get(w+c)){
+               temp = w+c;
+               w = w+c;
+               c = msg[++i+1];
+           }
+           map.set(w+c,index++);
+           answer.push(map.get(temp));
+       }
     }
-  }
-
-  if (before) answer.push(words.indexOf(before) + 1);
-  return answer;
+    return answer;
 }
