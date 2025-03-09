@@ -31,38 +31,31 @@ for (let combination of getCombination(linearStudents, 7)) {
   );
   if (sCount < 4) continue;
 
+  //  Set을 사용하여 조합 좌표를 O(1)로 조회할 수 있도록 변경
+  const coordSet = new Set(combinationCoords.map(([y, x]) => `${y}-${x}`));
+
   const visited = new Set();
   visited.add(`${combinationCoords[0][0]}-${combinationCoords[0][1]}`);
 
-  //  DFS를 실행하고, 방문한 개수를 반환하여 7개인지 확인
-  if (
-    isConnected(
-      combinationCoords[0][0],
-      combinationCoords[0][1],
-      visited,
-      combinationCoords
-    ) === 7
-  ) {
+  // DFS를 실행하고, 방문한 개수를 반환하여 7개인지 확인
+  if (isConnected(combinationCoords[0][0], combinationCoords[0][1], visited, coordSet) === 7) {
     result++;
   }
 }
 
 console.log(result);
 
-//  DFS 함수 (방문 개수를 반환하여 7개인지 확인)
-function isConnected(y, x, visited, combinationCoords) {
+// DFS 함수 (Set을 활용해 최적화)
+function isConnected(y, x, visited, coordSet) {
   let count = 1; // 현재 방문한 좌표 개수
 
   for (let k = 0; k < 4; k++) {
     let ny = y + dir[k][0];
     let nx = x + dir[k][1];
 
-    if (
-      combinationCoords.some(([cy, cx]) => cy === ny && cx === nx) &&
-      !visited.has(`${ny}-${nx}`)
-    ) {
+    if (coordSet.has(`${ny}-${nx}`) && !visited.has(`${ny}-${nx}`)) {
       visited.add(`${ny}-${nx}`);
-      count += isConnected(ny, nx, visited, combinationCoords); //  방문 개수 누적
+      count += isConnected(ny, nx, visited, coordSet); // 방문 개수 누적
     }
   }
 
@@ -74,19 +67,24 @@ function getCombinationCoords(arr) {
   return arr.map((index) => [Math.floor(index / 5), index % 5]);
 }
 
-// 조합 생성 함수
+// 반복문을 이용한 조합 생성 함수 (더 빠르고 안정적인 방식)
 function getCombination(arr, selectNumber) {
-  if (selectNumber === 0) return [[]];
-  if (arr.length === 0) return [];
+  const result = [];
+  const n = arr.length;
 
-  const first = arr[0];
-  const rest = arr.slice(1);
+  function dfs(start, path) {
+    if (path.length === selectNumber) {
+      result.push([...path]);
+      return;
+    }
 
-  const withFirst = getCombination(rest, selectNumber - 1).map((comb) => [
-    first,
-    ...comb,
-  ]);
-  const withoutFirst = getCombination(rest, selectNumber);
+    for (let i = start; i < n; i++) {
+      path.push(arr[i]);
+      dfs(i + 1, path);
+      path.pop();
+    }
+  }
 
-  return withFirst.concat(withoutFirst);
+  dfs(0, []);
+  return result;
 }
