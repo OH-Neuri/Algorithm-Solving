@@ -2,32 +2,34 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const [M, N] = input.shift().trim().split(" ").map(Number);
-const arr = input.map((i) => i.trim().split(" ").map(Number));
-const dp = Array.from({ length: M }, () => Array.from({ length: N }, () => -1));
+const [m, n] = input[0].split(" ").map(Number);
+const arr = input.slice(1).map((line) => line.split(" ").map(Number));
+const dp = Array.from({ length: m }, () => Array(n).fill(-1));
 
-function recur(i, j) {
-  if (i == M - 1 && j == N - 1) return 1;
-  if (dp[i][j] !== -1) return dp[i][j];
+const dir = [
+  [0, 1],
+  [0, -1],
+  [1, 0],
+  [-1, 0],
+];
 
-  dp[i][j] = 0;
+function DFS(y, x) {
+  if (y === m - 1 && x === n - 1) return 1;
+  if (dp[y][x] !== -1) return dp[y][x];
 
-  for (let [x, y] of [
-    [1, 0],
-    [0, 1],
-    [-1, 0],
-    [0, -1],
-  ]) {
-    const nx = i + x;
-    const ny = j + y;
+  dp[y][x] = 0;
 
-    if (nx >= 0 && nx < M && ny >= 0 && ny < N) {
-      if (arr[i][j] > arr[nx][ny]) {
-        dp[i][j] += recur(nx, ny);
-      }
+  for (let k = 0; k < 4; k++) {
+    const ny = y + dir[k][0];
+    const nx = x + dir[k][1];
+    if (ny < 0 || ny >= m || nx < 0 || nx >= n) continue;
+    if (arr[y][x] > arr[ny][nx]) {
+      dp[y][x] += DFS(ny, nx);
     }
   }
-  return dp[i][j];
+  return dp[y][x];
 }
 
-console.log(recur(0, 0));
+DFS(0, 0);
+
+console.log(dp[0][0]);
