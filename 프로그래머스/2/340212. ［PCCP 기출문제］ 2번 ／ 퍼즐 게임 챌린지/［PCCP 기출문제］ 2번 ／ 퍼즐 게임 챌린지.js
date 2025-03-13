@@ -1,32 +1,55 @@
 function solution(diffs, times, limit) {
-    let start = 1 
-    let end = 100000
-    while(start <= end){
-        let mid = parseInt((start + end) / 2)
-        let value = cal(mid, diffs, times, limit)
-        if(value){
-            end = mid-1 
-        }else{
-            start = mid+1
-        }
-    }
-    return start
+  // 이분탐색 ㄱㄱㄱ
+    let [left, right] = [1, diffs.reduce((acc, cur) => Math.max(acc, cur), 1)]
+    let answer = -1;
     
-    //diffs와 times 을 받아서 limit 이하 시간이면 true 아니면, false 
-    function cal(level, diffs, times,limit){
-        let result = 0; 
-        for(let i=0; i<diffs.length; i++){
-            if(level >= diffs[i]){
-                result += times[i]
-                if(result > limit) return false
+    while(left<=right){
+        // 레벨
+        const mid = Math.floor((right+left)/2)
+        let time = 0 
+        
+        for(let i = 0; i< diffs.length; i++){
+            if(diffs[i]<=mid){
+                time+= times[i];
             }else{
-                let cnt = diffs[i]-level
-                let amount = (times[i] + times[i-1] ) * cnt + times[i]
-                result += amount 
-                if(result > limit) return false
+                time+= (diffs[i]-mid)*(times[i-1]+times[i]) + times[i] 
             }
+            if(time>limit) break; // 제한 초과 시 중단
         }
-        if(result <= limit) return true 
-        else return false
+        
+        if(time<=limit){
+            answer = mid
+            right = mid-1
+        }else{
+            left = mid +1
+        }
     }
+    
+    return answer
 }
+
+//     let minLevel = Infinity
+    
+//     for(let level = 1; level <= 100; level++){
+//         let time = 0
+        
+//         for(let i = 0; i< diffs.length; i++){
+//             if(diffs[i]<=level){
+//                 time+= times[i];
+//             }else{
+//                 time+= (diffs[i]-level)*(times[i-1]+times[i]) + times[i] 
+//             }
+//             if(time>limit) break;
+//         }
+        
+//         console.log(time)
+//         if(time<=limit){
+//             minLevel = Math.min(minLevel,level)
+//         }
+        
+//     }
+    
+//     return minLevel === Infinity? -1: minLevel
+
+
+
