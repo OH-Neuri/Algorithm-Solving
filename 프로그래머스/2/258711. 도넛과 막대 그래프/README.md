@@ -1,10 +1,10 @@
 # [level 2] 도넛과 막대 그래프 - 258711 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/258711) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/258711?language=javascript) 
 
 ### 성능 요약
 
-메모리: 256 MB, 시간: 786.50 ms
+메모리: 290 MB, 시간: 853.42 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 03월 21일 16:50:16
+2025년 03월 21일 17:37:29
 
 ### 문제 설명
 

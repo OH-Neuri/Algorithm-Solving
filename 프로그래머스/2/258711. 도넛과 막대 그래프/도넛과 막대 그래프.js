@@ -44,7 +44,7 @@ function solution(edges) {
                 break;
             }
 
-            node = graph[node][0]; // 다음 노드 (무조건 하나뿐이거나 undefined)
+            node = graph[node][0]; // 다음 노드 
         }
     }
 
