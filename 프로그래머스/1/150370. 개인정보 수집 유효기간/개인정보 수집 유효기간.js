@@ -1,19 +1,29 @@
+
 function solution(today, terms, privacies) {
     var answer = [];
-    let termsHash = {}
-    let currentTime = today.split('.').map(i=>Number(i))
-    currentTime = currentTime[0]*336 + currentTime[1]*28 + currentTime[2]
-    for(let i=0;i<terms.length;i++){
-        let tmp = terms[i].split(" ")
-        termsHash[tmp[0]] = Number(tmp[1])
+    const dayOfToday = dateToDay(today) // 오늘 날짜
+    const daysOfTerms = new Map // 약관 날짜
+    for(let i = 0; i<terms.length; i++){
+        const termsArr = terms[i].split(" ")
+        daysOfTerms.set(termsArr[0], termsArr[1]*28)
     }
     
-    for(let i=0;i<privacies.length;i++){
-        let term = privacies[i].split('').pop()
-        let date = privacies[i].slice(0,-1).split('.').map(i=>Number(i))
-        let period = date[0]*336+date[1]*28+date[2] +(termsHash[term]*28) 
-        if(currentTime>=period) answer.push(i+1)
+    for(let i = 0; i < privacies.length; i++){
+        const privaciesArr = privacies[i].split(" ")
+        const dayOfPrivacies = dateToDay(privaciesArr[0]) // 날짜를 일 수로 변환
+        const dayOfTerms = daysOfTerms.get(privaciesArr[1]) // 약관종류 일 수로 변환
+        
+        if(dayOfPrivacies + dayOfTerms <= dayOfToday) answer.push(i+1)
     }
+    
     return answer;
+}
+
+function dateToDay(date){
+    const dateArr = date.split(".")
+    const year = Number(dateArr[0])
+    const month = Number(dateArr[1])
+    const day = Number(dateArr[2])
     
+    return (year-2000)*336 + (month*28) + day
 }
