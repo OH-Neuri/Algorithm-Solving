@@ -1,56 +1,58 @@
-function BFS(start, arr, target){
-  var time = 0;
-  const tranX  = [-1,1,0,0];
-  const tranY = [0,0,-1,1];
-  arr[start[0]][start[1]] = "X";
-  var queue = [start];
-
-  while(queue.length>0){
-    let size = queue.length;
-    for(var i = 0;i<size;i++){
-      let [x,y] = queue.shift();
-      for(var k = 0;k<4;k++){
-        let nx = x + tranX[k];
-        let ny = y + tranY[k];
-
-        if(nx>=0&&ny>=0&&nx<arr.length&&ny<arr[0].length&&arr[nx][ny]!=="X"){
-          if(target === arr[nx][ny]){
-            return time+1;
-          }
-
-          queue.push([nx,ny]);
-          arr[nx][ny] = 'X';
-        }
-      }
-    }
-    time++;
-  }
-
-  return -1;
-}
-
 function solution(maps) {
-
-  var lCord;
-  var sCord;
-  var maps1 = maps.map((element)=>element.split(""));
-  var maps2 = maps.map((element)=>element.split(""));
-  for(var x = 0;x<maps.length;x++){
-    for(var y = 0;y<maps[0].length;y++){
-      if(maps[x][y] === "L"){
-          lCord = [x,y];
-      }
-
-      if(maps[x][y] === "S"){
-        sCord = [x,y];
-      }
+    const dir = [[0,1],[0,-1],[1,0],[-1,0]]
+    const r = maps.length
+    const c = maps[0].length
+    const start = [0,0]
+    const lever = [0,0]
+    const end = [0,0] 
+    
+    for(let i = 0; i < r; i++){
+        for(let j = 0; j < c; j++){
+            if(maps[i][j] === "S"){
+                start[0] = i
+                start[1] = j 
+            }
+            if(maps[i][j] === "L"){
+                lever[0] = i
+                lever[1] = j 
+            }
+            if(maps[i][j] === "E"){
+                end[0] = i
+                end[1] = j 
+            }
+        }
     }
-  }
-  var a = BFS(sCord,[...maps1],"L");
-  var b = BFS(lCord,[...maps2],"E")
+    const distanceToLever = BFS(start[1], start[0], lever[1], lever[0])
+    const distanceToEnd = BFS(lever[1], lever[0], end[1], end[0])
+    
+    return distanceToLever=== -1 || distanceToEnd === -1 ? -1 : distanceToLever + distanceToEnd;
 
-  if(a===-1||b===-1){
-    return -1;
-  }
-   return a+b;
+    
+    function BFS(sX, sY, eX, eY){
+        const visited = Array.from({length:r}, () => Array(c).fill(false))
+        const queue = []
+        queue.push([sY, sX, 0])
+        visited[sY][sX] = true
+        let begin = 0
+        while(begin < queue.length){
+            // 현재 위치, 이동 횟수
+            const [cY, cX, cnt] = queue[begin++]
+            
+            // 목적지 도착
+            if(cY===eY && cX ===eX) return cnt
+            
+            // 4방향으로 이동
+            for(let k = 0; k < 4; k++){
+                const ny = cY + dir[k][0]
+                const nx = cX + dir[k][1]
+                if(ny < 0 || ny >= r || nx < 0 || nx >=c || maps[ny][nx]==="X" || visited[ny][nx]) continue
+                visited[ny][nx] = true
+                queue.push([ny, nx, cnt + 1])
+            }
+        }
+        
+        return -1
+    }
 }
+
+
