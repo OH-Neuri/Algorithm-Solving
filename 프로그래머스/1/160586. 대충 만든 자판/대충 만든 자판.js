@@ -1,23 +1,33 @@
 function solution(keymap, targets) {
-    let hash = {}
     var answer = [];
-    targets.forEach(t=>{
-        let sum = 0 
-        for(let i=0;i<t.length;i++){
-            let min = Infinity
-            for(let j=0; j<keymap.length; j++){
-                let index = keymap[j].indexOf(t[i])
-                if(min >index && index!=-1) min = index
+    const alpMinClick = Array.from({length:26}, () => Infinity)
+    
+    // 각 알파벳 키 최소 횟수 구하기
+    for(let i = 0; i < keymap.length; i++){
+        [...keymap[i]].forEach((v,j) => {
+            const alpIdx = v.charCodeAt(0) - 65
+            alpMinClick[alpIdx] = Math.min(alpMinClick[alpIdx], j + 1)
+        })
+    }
+    
+    // 클릭
+    for(let i = 0; i < targets.length; i++){
+        let click = 0
+        let flag = false
+        for(let char of targets[i]){
+            const charIdx = char.charCodeAt(0) - 65
+            if(alpMinClick[charIdx] == Infinity){
+                flag = true
+                break;
             }
-            if(min==Infinity){
-                sum = -1
-                break
-            }
-            else {
-                sum += min+1
-            }
+            click += alpMinClick[charIdx]
         }
-        answer.push(sum)
-    })
+        if(flag){
+            answer.push(-1)
+        }else{
+            answer.push(click)
+        }
+    }
+    
     return answer;
 }
