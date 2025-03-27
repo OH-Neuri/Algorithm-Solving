@@ -1,10 +1,10 @@
 # [level 2] 광물 캐기 - 172927 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/172927) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/172927#qna) 
 
 ### 성능 요약
 
-메모리: 33.4 MB, 시간: 0.38 ms
+메모리: 33.4 MB, 시간: 0.39 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 11월 01일 23:29:38
+2025년 03월 27일 21:21:56
 
 ### 문제 설명
 

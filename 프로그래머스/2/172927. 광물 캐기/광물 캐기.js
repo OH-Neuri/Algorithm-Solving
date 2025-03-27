@@ -1,44 +1,65 @@
 function solution(picks, minerals) {
-  let ans = 0;
-  // 곡괭이로 캘수 있는 광물 수
-  const picksSum = picks.reduce((prev, curr) => curr + prev, 0);
+    var answer = 0;
+    let count = 0 // 5개 묶음 카운트
+    let groups = 0 // 5개씩 묶음 값
+    let fatigue = 0 // 피로도 
+    let dPck = picks[0]
+    let iPck= picks[1]
+    let sPck = picks[2]
+    const sortedMineralGroups = []
+    
+    // 곡괭이 부족해서 캘 수 없는 광물 없애기
+    const len = dPck * 5 + iPck * 5 + sPck * 5
+    minerals.splice(len)
 
-  // 주어진 곡괭이로 캘 수 있는 광물까지만
-  const sliceMinerals = minerals.slice(0, picksSum * 5);
-  
-  // 광물 5개씩 잘라서 각 종류 개수 카운팅
-  const countedMinerals = sliceMinerals.reduce((prev, curr, idx) => {
-    const index = Math.floor(idx / 5);
-    if (!prev[index]) prev[index] = [0, 0, 0];
-    if (curr === "diamond") {
-      prev[index][0]++;
-    } else if (curr === "iron") {
-      prev[index][1]++;
-    } else if (curr === "stone") {
-      prev[index][2]++;
+    for(let i = 0; i < minerals.length; i++){
+        let tmp = 0 
+        if(minerals[i] === "diamond") tmp = 100;
+        if(minerals[i] === "iron") tmp = 10;
+        if(minerals[i] === "stone") tmp = 1;
+        
+        groups += tmp;
+        count++;
+        
+        if(count === 5){
+            sortedMineralGroups.push(groups)
+            groups = 0
+            count = 0
+        }
     }
-    return prev;
-  }, []);
+    
+    if(count) sortedMineralGroups.push(groups)
+    sortedMineralGroups.sort((a, b) => b - a)
+    
 
-  // 다이아, 철 우선순위로 정렬
-  const sortedMinerals = countedMinerals.sort(
-    (a, b) => b[0] - a[0] || b[1] - a[1]
-  );
-
-  // 순회하면서 곡괭이 소모하고 피로도 계산
-  sortedMinerals.forEach((value) => {
-    const [dia, iron, stone] = value;
-    if (picks[0]) {
-      ans += dia + iron + stone;
-      picks[0]--;
-    } else if (picks[1]) {
-      ans += dia * 5 + iron + stone;
-      picks[1]--;
-    } else if (picks[2]) {
-      ans += dia * 25 + iron * 5 + stone;
-      picks[2]--;
+    let idx = 0
+    
+   
+    
+    while((dPck !==0 || iPck!==0 || sPck!==0)  && idx < sortedMineralGroups.length){
+        const currMineral = sortedMineralGroups[idx]
+        const diaCnt = Math.floor(currMineral/100);
+        const ironCnt = Math.floor((currMineral%100) / 10);
+        const stoneCnt = currMineral % 10;
+        idx++;
+        if(dPck !== 0){
+            fatigue += diaCnt + ironCnt + stoneCnt
+            dPck--;
+            continue;
+        }
+        
+        if(iPck !== 0){
+            fatigue += diaCnt * 5 + ironCnt + stoneCnt
+            iPck--;
+            continue
+        }
+        
+        if(sPck !== 0){
+            fatigue += diaCnt * 25 + ironCnt * 5 + stoneCnt
+            sPck--;
+        }
     }
-  });
-
-  return ans;
+    
+    return fatigue;
 }
+
