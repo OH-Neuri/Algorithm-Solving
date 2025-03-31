@@ -1,13 +1,17 @@
 function solution(cards1, cards2, goal) {
-    for(let i=0;i<goal.length;i++){
-        if(cards1[0]==goal[i]){
-            cards1.splice(0,1)
-        }else if (cards2[0]==goal[i]){
-            cards2.splice(0,1)
+    var answer = "Yes";
+    let cd1Idx = 0
+    let cd2Idx = 0
+    
+    for(let word of goal){
+        if(cards1[cd1Idx]===word){
+            cd1Idx++;
+        }else if(cards2[cd2Idx]===word){
+            cd2Idx++;
         }else{
-            return "No"
+            answer = "No"
+            break
         }
     }
-    return "Yes";
-    
+    return answer;
 }
