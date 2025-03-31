@@ -1,38 +1,36 @@
 function solution(cap, n, deliveries, pickups) {
     let answer = 0;
-  	// deliveries[i]와 pickups[i]가 둘 다 0일 경우 방문할 필요 없으므로 처음부터 제거해주기. 
-   	for(let i=n-1; i>=0; i--){
-        if(deliveries[i] === 0 && pickups[i] === 0) {
-            deliveries.pop();
-            pickups.pop();
-        } else break;
-    }
-    
-    let [dLen, pLen] = [deliveries.length-1, pickups.length-1];
-  	// 배달과 수거를 모두 끝낼 때까지 반복
-    while(dLen >= 0 || pLen >= 0){
-        let max = Math.max(dLen, pLen);
-        answer += (max+1)*2;
-        dnp(dLen,cap,deliveries);
-        dnp(pLen,cap,pickups);
-        [dLen, pLen] = [deliveries.length-1, pickups.length-1];
-    }
-    
-    return answer;
-}
+    let dIdx = n - 1;
+    let pIdx = n - 1;
 
-function dnp(n,cap,arr){
-    let count = 0;
-    for(let i=n; i>=0; i--){
-      	// 트럭에 다 실을 수 있는 경우
-        if(cap-count >= arr[i]) {
-            count += arr[i];
-            arr.pop();
+    while (dIdx >= 0 || pIdx >= 0) {
+       // 가장 먼 거리 찾기
+        while (dIdx >= 0 && deliveries[dIdx] === 0) dIdx--;
+        while (pIdx >= 0 && pickups[pIdx] === 0) pIdx--;
+
+        if (dIdx < 0 && pIdx < 0) break;
+
+        const dist = Math.max(dIdx, pIdx) + 1;
+        answer += dist * 2;
+
+        // cap만큼 배달
+        let dCap = cap;
+        for (let i = dIdx; i >= 0 && dCap > 0; i--) {
+            if (deliveries[i] === 0) continue;
+            const deliver = Math.min(deliveries[i], dCap);
+            deliveries[i] -= deliver;
+            dCap -= deliver;
         }
-      	// 일부만 실을 수 있는 경우
-      	else {
-            arr[i] -= cap-count;
-            return;
+
+        // cap만큼 수거
+        let pCap = cap;
+        for (let i = pIdx; i >= 0 && pCap > 0; i--) {
+            if (pickups[i] === 0) continue;
+            const pickup = Math.min(pickups[i], pCap);
+            pickups[i] -= pickup;
+            pCap -= pickup;
         }
     }
+
+    return answer;
 }
