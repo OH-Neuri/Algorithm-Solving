@@ -1,44 +1,52 @@
 function solution(board) {
+    const dir = [[0,1],[0,-1],[1,0],[-1,0]]
     var answer = 0;
-    board = board.map(items => items.split(''));
+    const row = board.length
+    const col = board[0].length
+    const start = [0,0]
+    const end = [0,0]
+    const visited = Array.from({length : row}, () => Array.from({length : col}, ()=> false))
     
-    const q = [];
-    const n =board.length;     // 가로 길이
-    const m = board[0].length; // 세로 길이
-    const dx = [-1, 1, 0, 0];  // 상하좌우 방향
-    const dy = [0, 0, -1, 1];
-    
-    board.forEach((items, i) => {
-        items.forEach((item, j) => {
-            if(item === 'R') q.push([i, j]);  
-        });
-    });
-	
-    board[q[0][0]][q[0][1]] = 'O';   
-    while(q.length) {
-        const size = q.length;
-        for(let i=0; i<size; i++) {
-            const [x, y] = q.shift();
-            
-            for(let j=0; j<4; j++) {
-                let nx = x + dx[j];
-                let ny = y + dy[j];
-                while(nx >= 0 && nx < n && ny >= 0 && ny < m && board[nx][ny] !== 'D') {
-                    nx += dx[j];
-                    ny += dy[j];
-                }
-                
-                nx -= dx[j];
-                ny -= dy[j];
-                
-                if(board[nx][ny] === 'G') return answer+1;
-                if(board[nx][ny] !== 'O') {
-                    board[nx][ny] = 'O';
-                    q.push([nx, ny]);
-                }
+    for(let i = 0; i < row; i++){
+        for(let j = 0; j < col; j++){
+            if(board[i][j]==="R"){
+                start[0] = i
+                start[1] = j
+            }
+            if(board[i][j]==="G"){
+                end[0] = i
+                end[1] = j
             }
         }
-        answer++;
+    }
+        
+    const queue = []
+    queue.push([start[0], start[1], 0])
+    visited[start[0]][start[1]] = true
+    let begin = 0
+    
+    while(begin < queue.length){
+        const [cy, cx, cnt] = queue[begin++]
+        
+        if(cy === end[0] && cx === end[1]) return cnt
+        
+       
+        for(let k = 0; k < 4; k++){
+             let ny = cy 
+             let nx = cx 
+             while(true) {
+                const ty = ny + dir[k][0];
+                const tx = nx + dir[k][1];
+                
+                if(ty < 0 || ty >= row || tx < 0 || tx >= col || board[ty][tx] === "D" ) break;
+                ny = ty;
+                nx = tx;
+            }
+            
+            if(visited[ny][nx]) continue
+            visited[ny][nx] = true
+            queue.push([ny, nx, cnt + 1])
+        }
     }
     
     return -1;
