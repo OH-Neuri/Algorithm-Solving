@@ -1,27 +1,27 @@
 function solution(maps) {
-    if(maps===[1]){return 1;}
-    var visit = [];
-    var queue = [[0,0]];
-    var moveX = [-1,1,0,0];
-    var moveY = [0,0,-1,1];
-    var count =1;
-    if(maps[maps.length - 1][maps[0].length - 2] === 0 && maps[maps.length - 2][maps[0].length - 1] === 0) return -1;
-    while(queue.length>0){
-        var queLen = queue.length;
-        for(var q = 0; q<queLen;q++){
-            let [x,y] = queue.shift();
-            for(var i =0;i<4;i++){
-                var newX = x + moveX[i];
-                var newY = y + moveY[i];
-                if(newX===maps[0].length-1&&newY===maps.length-1) return ++count;
-                if(newX>=0&&newY>=0&&newX<maps[0].length&&newY<maps.length&&maps[newY][newX]===1){
-                    queue.push([newX,newY]);
-                    maps[newY][newX] = 0;
-                }
-            }
+    var answer = -1;
+    const dir = [[0,1],[0,-1],[1,0],[-1,0]]
+    const row = maps.length
+    const col = maps[0].length
+    const visited = Array.from({length:row}, ()=> Array.from({length:col}, () => false))
+    
+    const queue = []
+    let begin = 0
+    queue.push([0, 0, 1])
+    while(begin < queue.length){
+        const [cy, cx, cnt] = queue[begin++]
+        if(cy === row - 1 && cx === col - 1) return cnt
+        
+        for(let k = 0; k < 4; k++){
+            const ny = cy + dir[k][0]
+            const nx = cx + dir[k][1]
+            
+            if(ny < 0 || ny >= row || nx < 0 || nx >= col || maps[ny][nx] === 0 || visited[ny][nx]) continue
+            visited[ny][nx] = true
+            queue.push([ny, nx, cnt + 1])
+            
         }
-        count++;
     }
     
-    return -1;
+    return answer;
 }
