@@ -1,31 +1,33 @@
 function solution(begin, target, words) {
-    let visited = Array.from({length:words.length},()=>[Infinity])
-    let wordListLength = words.length
-    let wordLength = words[0].length
-    words = words.map(v=>v.split(""))
-    let queue = [[begin.split(""),1]]
+    var answer = 0;
+    const len = begin.length
     
-    // BFS
-    while(queue.length){
-        let current = queue.shift()
-        let cw = current[0]
-        let cnt = current[1]
+    // 변환할 수 없는 경우에는 0를 return한다.
+    if(!words.includes(target)) return 0
+    
+    const queue = []
+    queue.push([begin, [begin]]) // 비효율적인듯
+    let start = 0
+    while(start < queue.length){
+        const [currWord, visitedWord] = queue[start++]
         
-        if(cw.join("") === target) return cnt-1
+        if(currWord === target) return visitedWord.length - 1
         
-        for(let i=0;i<wordListLength;i++){
-            let checkOneWord = 0
-            for(let j=0; j<wordLength;j++){
-                if(cw[j]!==words[i][j]) {
-                    if(checkOneWord>1) {break}
-                    checkOneWord +=1
-                }
+        for(let word of words){
+            // 이미 사용했던 단어는 패스
+            if(visitedWord.includes(word)) continue
+            
+            // 한 번에 한 개의 알파벳만 바꿀 수 있다.
+            let same = 0
+            for(let i = 0; i < len; i++){
+                if(currWord[i]===word[i]) same++
             }
-            if(checkOneWord <=1 && cnt < visited[i]){
-                visited[i] = cnt
-                queue.push([words[i],cnt+1])
+            // 단어 하나만 다를 경우
+            if(same === len - 1){
+                const tmpArr = [...visitedWord]
+                tmpArr.push(word)
+                queue.push([word, tmpArr])
             }
         }
     }
-    return 0;
 }
