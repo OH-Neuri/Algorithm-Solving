@@ -1,17 +1,42 @@
 function solution(weights) {
-    let answer = 0;
-    const store = {}; //key-value
-    const cal = [1, 3/2, 2, 4/3]; //경우의 수 (1,1), (2,3), (2,4), (3,4)
-
-    weights.sort((a,b)=> b - a).forEach((w) => { //내림차순 정렬 후, 전체 돌면서
-        let s;
-        cal.forEach((i)=>{
-            if( s = w * i, store[s] ){ //해당 비율을 곱한 값이 store에 존재할 경우
-              answer += store[s];
+    var answer = 0;
+    const ratios = [
+        [1,1],
+        [3,2],
+        [4,3],
+        [2,1],
+        [2,3],
+        [3,4],
+        [1,2],
+    ]
+    
+    const countMap = new Map()
+    for(let w of weights){
+        for(const [a, b] of ratios){
+            const target = (w * a) / b;
+            if(Number.isInteger(target) && countMap.has(target)){
+                answer += countMap.get(target)
             }
-        });
-        if (!store[w]) store[w] = 1;
-        else store[w]++;
-    });
+        }
+        
+        countMap.set(w, (countMap.get(w) ??  0) + 1)
+    }
+    
     return answer;
 }
+
+  // const countMap = new Map()
+    // 몸무게별 인원수 저장
+//     for(let weight of weights){
+//         countMap.set(weight, (countMap.get(weight) || 0) + 1)
+//     }
+    
+    // 100, 100, 100, 100, 100 -> 10
+    // 100, 100, 100, 100 -> 6
+    // 100, 100, 100 -> 3
+    // n(n-1)/2
+    // 같은 사람 몸무게 먼저 쌍찾기
+//     for(let [weight, cnt] of wMap.entries()){
+//         if(cnt >= 2){
+//             answer += cnt * (cnt-1) / 2 
+//         }
