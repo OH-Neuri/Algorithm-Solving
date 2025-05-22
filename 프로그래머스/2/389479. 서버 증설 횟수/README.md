@@ -1,10 +1,10 @@
 # [level 2] 서버 증설 횟수 - 389479 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/389479) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/389479?language=javascript) 
 
 ### 성능 요약
 
-메모리: 37 MB, 시간: 4.20 ms
+메모리: 38.2 MB, 시간: 9.66 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 03월 17일 17:41:17
+2025년 05월 22일 15:03:23
 
 ### 문제 설명
 

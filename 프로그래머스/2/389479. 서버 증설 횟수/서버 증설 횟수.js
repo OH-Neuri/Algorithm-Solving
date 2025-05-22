@@ -1,29 +1,31 @@
 function solution(players, m, k) {
-    var answer = 0;
-    const queue = []
+    const nSMap = new Map()
+    let nSId = 0
     
-    for(let time = 0; time <24; time++){
-        // 현재 시간대에 필요한 서버 수 
-        const currServer = Math.floor(players[time]/m)
+    for(let time = 0; time < players.length; time++){
         
-        let i = 0;
-        while (i < queue.length) {
-            queue[i] -= 1;
-            if (queue[i] === 0) {
-                queue.splice(i, 1);  // 현재 요소 제거
-            } else {
-                i++;  // 제거되지 않은 경우에만 다음 인덱스로 이동
+        // 가동중인 서버 진행 시간 갱신 및 종료 
+        if(nSMap.size > 0){
+            
+            for(let [key, value] of nSMap){
+                const nowTime = value + 1;
+                if(nowTime > k) {
+                    nSMap.delete(key)
+                }else { 
+                    nSMap.set(key, nowTime)
+                }
             }
         }
-       
-        // 현재 증설해야하는 서버 수 
-        const rqServer = currServer-queue.length
-        if(queue.length < currServer){
-            for(let j=0;j<rqServer; j++){
-                queue.push([k])
-                answer++;
+        
+        // 서버 증설
+        if(players[time] / m > nSMap.size){
+            const addServer = Math.floor(players[time] / m) - nSMap.size
+            
+            for(let i = 0; i < addServer; i++){
+                nSMap.set(nSId++, 1)
             }
         }
     }
-    return answer;
+    
+    return nSId;
 }
